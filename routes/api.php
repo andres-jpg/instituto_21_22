@@ -2,18 +2,10 @@
 
 use App\Http\Controllers\API\CentroController;
 use App\Http\Controllers\API\NivelController;
-
-
-
 use App\Http\Controllers\API\falta_profesorController;
-
-
-
 use App\Http\Controllers\API\GrupoController;
 use App\Http\Controllers\API\TutorizadoController;
-
 use App\Http\Controllers\API\MateriaController;
-
 use App\Http\Controllers\API\MatriculaController;
 use App\Http\Controllers\API\PeriodoLectivoController;
 use App\Http\Controllers\API\MateriaMatriculadaController;
@@ -23,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 use Psr\Http\Message\ServerRequestInterface;
 use Tqdev\PhpCrudApi\Api;
 use Tqdev\PhpCrudApi\Config;
+
+use Illuminate\Validation\ValidationException;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +31,26 @@ use Tqdev\PhpCrudApi\Config;
 |
 */
 
+Route::post('/tokens/create', function (Request $request) {
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required'
+    ]);
+
+    $user = User::where('email', $request->email)->first();
+
+    if (! $user || ! Hash::check($request->password, $user->password)) {
+        throw ValidationException::withMessages([
+            'email' => ['The provided credentials are incorrect.'],
+        ]);
+    }
+
+    return response()->json([
+        'token_type' => 'Bearer',
+        'access_token' => $user->createToken('token_name')->plainTextToken // token name you can choose for your self or leave blank if you like to
+    ]);
+});
+
 Route::apiResource('centros', CentroController::class);
 
 Route::apiResource('matriculas', MatriculaController::class);
@@ -43,8 +59,6 @@ Route::apiResource('niveles', NivelController::class)
 ->parameters([
     'niveles' => 'nivel'
 ]);
-
-
 
 Route::apiResource('faltas_profesores', falta_profesorController::class)
 ->parameters([
@@ -55,17 +69,19 @@ Route::apiResource('grupos', GrupoController::class);
 
 Route::apiResource('tutorizados', TutorizadoController::class);
 
-
-
 Route::apiResource('materias', MateriaController::class);
 
 Route::apiResource('periodosLectivos', PeriodoLectivoController::class);
+
 Route::apiResource('materiasmatriculadas', MateriaMatriculadaController::class)
 ->parameters([
     'materiasmatriculadas' => 'materiaMatriculada'
 
 ]);
 
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
 
 Route::any('/{any}', function (ServerRequestInterface $request) {
     $config = new Config([
@@ -80,6 +96,4 @@ Route::any('/{any}', function (ServerRequestInterface $request) {
     return $response;
 })->where('any', '.*');
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
