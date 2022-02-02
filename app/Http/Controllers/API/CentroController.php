@@ -7,14 +7,22 @@ use App\Models\Centro;
 use Illuminate\Http\Request;
 use App\Http\Resources\CentroResource;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Gate;
 
 class CentroController extends Controller
 {
     /**
+<<<<<<< HEAD
      * Create the controller instance.
      *
      * @return void
      */
+=======
+    * Create the controller instance.
+    *
+    * @return void
+    */
+>>>>>>> a34c77e2ad3667551d6a133d8276224d027b6fe2
     public function __construct()
     {
         $this->authorizeResource(Centro::class, 'centro');
@@ -27,7 +35,12 @@ class CentroController extends Controller
      */
     public function index()
     {
-        // return CentroResource::collection(Centro::paginate(10));
+        return CentroResource::collection(Centro::paginate(10));
+    }
+
+    public function indexOD()
+    {
+        $this->authorize('viewAny', Centro::class);
         $response = Http::get('https://datosabiertos.regiondemurcia.es/catalogo/api/action//datastore_search?resource_id=52dd8435-46aa-495e-bd2b-703263e576e7&limit=5');
         return response()->json(json_decode($response));
     }
@@ -40,6 +53,8 @@ class CentroController extends Controller
      */
     public function store(Request $request)
     {
+//        $this->authorize('create', Centro::class);
+
         $centro = json_decode($request->getContent(), true);
 
         $centro = Centro::create($centro);
@@ -70,6 +85,8 @@ class CentroController extends Controller
      */
     public function update(Request $request, Centro $centro)
     {
+//        $this->authorize('update', $centro);
+
         $centroData = json_decode($request->getContent(), true);
         $centro->update($centroData);
 
@@ -84,6 +101,7 @@ class CentroController extends Controller
      */
     public function destroy(Centro $centro)
     {
+//        $this->authorize('delete', $centro);
         $centro->delete();
     }
 }

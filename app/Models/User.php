@@ -42,7 +42,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+<<<<<<< HEAD
     public function isAdministrador() {
         return $this->email == env("ADMIN_EMAIL", "andres@gmail.com");
+=======
+    public function isAdministrator() {
+        return $this->email == env("ADMIN_EMAIL", "pepe@gmail.com");
+>>>>>>> a34c77e2ad3667551d6a133d8276224d027b6fe2
     }
 }
