@@ -12,17 +12,14 @@ use Illuminate\Support\Facades\Gate;
 class CentroController extends Controller
 {
     /**
-<<<<<<< HEAD
      * Create the controller instance.
      *
      * @return void
      */
-=======
-    * Create the controller instance.
+    /** Create the controller instance.
     *
     * @return void
     */
->>>>>>> a34c77e2ad3667551d6a133d8276224d027b6fe2
     public function __construct()
     {
         $this->authorizeResource(Centro::class, 'centro');

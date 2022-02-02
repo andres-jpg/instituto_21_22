@@ -10,10 +10,7 @@ class CentroPolicy
 {
     use HandlesAuthorization;
 
-<<<<<<< HEAD
 
-=======
->>>>>>> a34c77e2ad3667551d6a133d8276224d027b6fe2
     /**
      * Perform pre-authorization checks.
      *
@@ -27,10 +24,7 @@ class CentroPolicy
             return true;
         }
     }
-<<<<<<< HEAD
 
-=======
->>>>>>> a34c77e2ad3667551d6a133d8276224d027b6fe2
     /**
      * Determine whether the user can view any models.
      *
@@ -39,11 +33,7 @@ class CentroPolicy
      */
     public function viewAny(User $user)
     {
-<<<<<<< HEAD
-        //
-=======
         return $user->id == 10; // un ejemplo de autorización a un usuario concreto.
->>>>>>> a34c77e2ad3667551d6a133d8276224d027b6fe2
     }
 
     /**
@@ -66,11 +56,8 @@ class CentroPolicy
      */
     public function create(User $user)
     {
-<<<<<<< HEAD
         return $user->role == 'administrador';
-=======
         return true; //$user->id == 1; // 'administrador';
->>>>>>> a34c77e2ad3667551d6a133d8276224d027b6fe2
     }
 
     /**
@@ -94,11 +81,8 @@ class CentroPolicy
      */
     public function delete(User $user, Centro $centro)
     {
-<<<<<<< HEAD
         return $user->id === $centro->coordinador;
-=======
         return true; //$user->id === $centro->coordinador;
->>>>>>> a34c77e2ad3667551d6a133d8276224d027b6fe2
     }
 
     /**
@@ -124,8 +108,5 @@ class CentroPolicy
     {
         //
     }
-<<<<<<< HEAD
 
-=======
->>>>>>> a34c77e2ad3667551d6a133d8276224d027b6fe2
 }
