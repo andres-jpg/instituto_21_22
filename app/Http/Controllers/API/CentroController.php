@@ -11,6 +11,16 @@ use Illuminate\Support\Facades\Http;
 class CentroController extends Controller
 {
     /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Centro::class, 'centro');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
