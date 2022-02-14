@@ -12,8 +12,14 @@ class CentroResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-    public function toArray($request)
-    {
-        return parent::toArray($request);
+    public function toArray($request) {
+        return [
+            "id" => $this->id,
+            "codigo" => $this->codigo,
+            "nombre" => $this->nombre,
+            "web" => $this->web,
+            "coordinador" => new UserResource($this->user),
+            "verificado" => $this->verificado
+        ];
     }
 }
