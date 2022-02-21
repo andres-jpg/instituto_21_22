@@ -17,7 +17,7 @@ use App\Http\Controllers\API\MateriaController;
 use App\Http\Controllers\API\MatriculaController;
 use App\Http\Controllers\API\PeriodoLectivoController;
 use App\Http\Controllers\API\MateriaMatriculadaController;
-
+use App\Models\Centro;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Psr\Http\Message\ServerRequestInterface;
@@ -58,7 +58,7 @@ Route::post('tokens/create', function (Request $request) {
     ]);
 })->name('login');
 
-Route::get('centros/indexOD', [CentroController::class, 'indexOD'])->middleware('auth:sanctum');
+// Route::get('centros/indexOD', [CentroController::class, 'indexOD'])->middleware('auth:sanctum');
 
 Route::middleware('auth:sanctum')->
     apiResource('centros', CentroController::class)
@@ -78,7 +78,8 @@ Route::apiResource('faltas_profesores', falta_profesorController::class)
     'faltas_profesores' => 'falta_profesor'
 ]);
 
-Route::apiResource('grupos', GrupoController::class);
+Route::middleware('auth:sanctum')->
+    apiResource('grupos', GrupoController::class);
 
 Route::apiResource('tutorizados', TutorizadoController::class);
 
@@ -87,6 +88,7 @@ Route::apiResource('tutorizados', TutorizadoController::class);
 Route::apiResource('materias', MateriaController::class);
 
 Route::apiResource('periodosLectivos', PeriodoLectivoController::class);
+
 Route::apiResource('materiasmatriculadas', MateriaMatriculadaController::class)
 ->parameters([
     'materiasmatriculadas' => 'materiaMatriculada'
@@ -96,6 +98,9 @@ Route::apiResource('materiasmatriculadas', MateriaMatriculadaController::class)
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::middleware('auth:sanctum')
+->get('/miCentro', [CentroController::class, 'miCentro']);
 
 Route::any('/{any}', function (ServerRequestInterface $request) {
     $config = new Config([

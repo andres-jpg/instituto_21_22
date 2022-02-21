@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Centro;
 use Illuminate\Http\Request;
 use App\Http\Resources\CentroResource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Gate;
 
@@ -67,9 +68,9 @@ class CentroController extends Controller
      */
     public function show(Centro $centro)
     {
-        // return new CentroResource($centro);
-        $response = Http::get('https://datosabiertos.regiondemurcia.es/catalogo/api/action//datastore_search?resource_id=52dd8435-46aa-495e-bd2b-703263e576e7&filters={"CODIGOCENTRO": "'. $centro->codigo .'"}');
-        return response()->json(json_decode($response)->result->records);
+        return new CentroResource($centro);
+        // $response = Http::get('https://datosabiertos.regiondemurcia.es/catalogo/api/action//datastore_search?resource_id=52dd8435-46aa-495e-bd2b-703263e576e7&filters={"CODIGOCENTRO": "'. $centro->codigo .'"}');
+        // return response()->json(json_decode($response)->result->records);
 
     }
 
@@ -100,5 +101,10 @@ class CentroController extends Controller
     {
 //        $this->authorize('delete', $centro);
         $centro->delete();
+    }
+
+    public function miCentro() {
+        $user = Auth::user();
+        return new CentroResource($user->centroCoordinado);
     }
 }
