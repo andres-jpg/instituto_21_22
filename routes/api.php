@@ -17,6 +17,7 @@ use App\Http\Controllers\API\MateriaController;
 use App\Http\Controllers\API\MatriculaController;
 use App\Http\Controllers\API\PeriodoLectivoController;
 use App\Http\Controllers\API\MateriaMatriculadaController;
+use App\Http\Controllers\API\CursoController;
 use App\Models\Centro;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -94,6 +95,8 @@ Route::apiResource('materiasmatriculadas', MateriaMatriculadaController::class)
     'materiasmatriculadas' => 'materiaMatriculada'
 
 ]);
+
+Route::apiResource('cursos', CursoController::class);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
